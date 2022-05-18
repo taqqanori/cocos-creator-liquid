@@ -56,16 +56,7 @@ export class Liquid extends Component {
       this.particleSystem.GetUserDataBuffer()[i] = node;
     });
 
-    console.log(world);
-    const stack = world.m_contactManager.m_broadPhase.m_tree.m_stack;
-    const origPop = stack.Pop;
-    stack.Pop = () => {
-      try {
-        origPop.bind(stack)();
-      } catch (e) {
-        return null;
-      }
-    };
+    this.fixGrowableStack();
   }
 
   update(deltaTime: number) {
@@ -87,6 +78,24 @@ export class Liquid extends Component {
     ) {
       f(i);
     }
+  }
+
+  // Following fix for b2GrowableStack seems inconsistent with LiquidFun of C++ version for me...
+  // https://github.com/cocos-creator/cocos-box2d.ts/commit/8297c387d35a7b8b7548519aa2bfd43496bb1553#diff-aa9edc49bf7ff526226c2357e864c0006ab06b7ec4358a58a7af2f5ed5c1ad2cR50
+  private fixGrowableStack(): void {
+    const world = PhysicsSystem2D.instance.physicsWorld.impl as ccb2.b2World;
+    const stack = world?.m_contactManager?.m_broadPhase?.m_tree?.m_stack;
+    if (!stack) {
+      return;
+    }
+    const origPop = stack.Pop;
+    stack.Pop = () => {
+      try {
+        origPop.bind(stack)();
+      } catch (e) {
+        return null;
+      }
+    };
   }
 }
 
