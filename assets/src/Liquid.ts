@@ -80,8 +80,18 @@ export class Liquid extends Component {
     }
   }
 
-  // Following fix for b2GrowableStack seems inconsistent with LiquidFun of C++ version for me...
-  // https://github.com/cocos-creator/cocos-box2d.ts/commit/8297c387d35a7b8b7548519aa2bfd43496bb1553#diff-aa9edc49bf7ff526226c2357e864c0006ab06b7ec4358a58a7af2f5ed5c1ad2cR50
+  /**
+   * Following fix for b2GrowableStack seems very inconsistent with LiquidFun of C++ version for me...
+   * https://github.com/cocos-creator/cocos-box2d.ts/commit/8297c387d35a7b8b7548519aa2bfd43496bb1553#diff-aa9edc49bf7ff526226c2357e864c0006ab06b7ec4358a58a7af2f5ed5c1ad2cR50
+   *
+   * C++ version (allows b2NullNode(-1) in stack)
+   * https://github.com/google/liquidfun/blob/master/liquidfun/Box2D/Box2D/Common/b2GrowableStack.h
+   * https://github.com/google/liquidfun/blob/7f20402173fd143a3988c921bc384459c6a858f2/liquidfun/Box2D/Box2D/Collision/b2DynamicTree.h#L177
+   *
+   * cocos version (assumes null in place of b2NullNode in stack at caller side, but raises exception for null at callee side)
+   * https://github.com/cocos-creator/cocos-box2d.ts/blob/8c3e947d96833f17e9041341b5ce573606fb6c3e/src/common/b2_growable_stack.ts#L50
+   * https://github.com/cocos-creator/cocos-box2d.ts/blob/8c3e947d96833f17e9041341b5ce573606fb6c3e/src/collision/b2_dynamic_tree.ts#L99
+   */
   private fixGrowableStack(): void {
     const world = PhysicsSystem2D.instance.physicsWorld.impl as ccb2.b2World;
     const stack = world?.m_contactManager?.m_broadPhase?.m_tree?.m_stack;
