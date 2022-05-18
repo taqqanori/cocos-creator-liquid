@@ -1,0 +1,5 @@
+{
+    "imports": {
+        "@cocos/box2d/src/box2d": "./node_modules/@cocos/box2d/build/box2d/box2d.umd.js"
+    }
+}

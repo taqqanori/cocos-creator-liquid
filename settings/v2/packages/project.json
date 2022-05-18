@@ -1,0 +1,5 @@
+{
+  "script": {
+    "importMap": "project://import-map.json"
+  }
+}

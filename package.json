@@ -1,0 +1,11 @@
+{
+  "name": "cocos-creator-liquid",
+  "uuid": "a50cea1e-a6aa-4722-8bb1-6e7ade2de672",
+  "version": "3.4.2",
+  "creator": {
+    "version": "3.4.2"
+  },
+  "dependencies": {
+    "@cocos/box2d": "^1.0.1"
+  }
+}
