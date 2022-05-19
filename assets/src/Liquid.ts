@@ -6,6 +6,11 @@ import {
   SpriteFrame,
   Node,
   math,
+  director,
+  instantiate,
+  Canvas,
+  UITransformComponent,
+  PHYSICS_2D_PTM_RATIO,
 } from "cc";
 const { ccclass, property } = _decorator;
 
@@ -35,35 +40,58 @@ export class Liquid extends Component {
   particleSpriteFrame: SpriteFrame;
 
   start() {
+    // a hack to avoid strange runtime error
+    this.fixGrowableStack();
+
+    // cast just once for type safety
     const world = PhysicsSystem2D.instance.physicsWorld.impl as ccb2.b2World;
+
+    // create particle system from definition
     const particleSystemDef = new ccb2.b2ParticleSystemDef();
-    particleSystemDef.destroyByAge = false;
+    particleSystemDef.radius =
+      this.particleSpriteFrame.width / PHYSICS_2D_PTM_RATIO;
     this.particleSystem = world.CreateParticleSystem(particleSystemDef);
+
+    // create particle group from definition
     const groupDef = new ccb2.b2ParticleGroupDef();
     const shape = new ccb2.b2PolygonShape();
-    shape.SetAsBox(100, 100);
+    shape.SetAsBox(
+      this.uiTransform.width / PHYSICS_2D_PTM_RATIO,
+      this.uiTransform.height / PHYSICS_2D_PTM_RATIO
+    );
     groupDef.shape = shape;
-    // groupDef.color.Set(100, 150, 255, 255);
     groupDef.flags = ccb2.b2ParticleFlag.b2_waterParticle;
-    groupDef.position.Set(100, 100);
+    const center = this.uiTransform.convertToWorldSpaceAR(
+      new math.Vec3(0, 0, 0)
+    );
+    groupDef.position.Set(
+      center.x / PHYSICS_2D_PTM_RATIO,
+      center.y / PHYSICS_2D_PTM_RATIO
+    );
     this.particleGroup = this.particleSystem.CreateParticleGroup(groupDef);
 
+    // create sprites for each particles
     this.forEachParticle((i) => {
       const node = new Node();
+      node.layer = this.node.layer;
       const s = node.addComponent(Sprite);
       s.spriteFrame = this.particleSpriteFrame;
       this.node.addChild(node);
       this.particleSystem.GetUserDataBuffer()[i] = node;
     });
-
-    this.fixGrowableStack();
   }
 
   update(deltaTime: number) {
+    // update particle locations
     this.forEachParticle((i) => {
       const node: Node = this.particleSystem.GetUserDataBuffer<Node>()[i];
       const position = this.particleSystem.GetPositionBuffer()[i];
-      node.worldPosition = new math.Vec3(position.x, position.y, 0);
+      node.position = this.uiTransform.convertToNodeSpaceAR(
+        new math.Vec3(
+          position.x * PHYSICS_2D_PTM_RATIO,
+          position.y * PHYSICS_2D_PTM_RATIO
+        )
+      );
     });
   }
 
@@ -78,6 +106,10 @@ export class Liquid extends Component {
     ) {
       f(i);
     }
+  }
+
+  private get uiTransform(): UITransformComponent {
+    return this.node.getComponent(UITransformComponent);
   }
 
   /**
