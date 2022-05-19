@@ -6,9 +6,6 @@ import {
   SpriteFrame,
   Node,
   math,
-  director,
-  instantiate,
-  Canvas,
   UITransformComponent,
   PHYSICS_2D_PTM_RATIO,
 } from "cc";
@@ -40,7 +37,7 @@ export class Liquid extends Component {
   particleSpriteFrame: SpriteFrame;
 
   start() {
-    // a hack to avoid strange runtime error
+    // a hack to avoid strange runtime error raised when there are no RigidBody2D in world.
     this.fixGrowableStack();
 
     // cast just once for type safety
@@ -133,7 +130,7 @@ export class Liquid extends Component {
     const origPop = stack.Pop;
     stack.Pop = () => {
       try {
-        origPop.bind(stack)();
+        return origPop.bind(stack)();
       } catch (e) {
         return null;
       }
