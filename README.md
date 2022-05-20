@@ -1,6 +1,6 @@
 # cocos-creator-liquid
 
-[LiquidFun](https://google.github.io/liquidfun/) API demo for [Cocos Creator v3.5.0](https://www.cocos.com/en/creator).
+Type-safe [LiquidFun](https://google.github.io/liquidfun/) API demo for [Cocos Creator v3.5.0](https://www.cocos.com/en/creator).
 
 <div align="center">
   <img src="doc/images/cocos-creator-liquid.gif">
