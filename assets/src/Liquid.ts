@@ -46,15 +46,15 @@ export class Liquid extends Component {
     // create particle system from definition
     const particleSystemDef = new ccb2.b2ParticleSystemDef();
     particleSystemDef.radius =
-      this.particleSpriteFrame.width / PHYSICS_2D_PTM_RATIO;
+      this.particleSpriteFrame.width / 2 / PHYSICS_2D_PTM_RATIO;
     this.particleSystem = world.CreateParticleSystem(particleSystemDef);
 
     // create particle group from definition
     const groupDef = new ccb2.b2ParticleGroupDef();
     const shape = new ccb2.b2PolygonShape();
     shape.SetAsBox(
-      this.uiTransform.width / PHYSICS_2D_PTM_RATIO,
-      this.uiTransform.height / PHYSICS_2D_PTM_RATIO
+      this.uiTransform.width / 2 / PHYSICS_2D_PTM_RATIO,
+      this.uiTransform.height / 2 / PHYSICS_2D_PTM_RATIO
     );
     groupDef.shape = shape;
     groupDef.flags = ccb2.b2ParticleFlag.b2_waterParticle;
