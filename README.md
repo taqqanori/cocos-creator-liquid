@@ -2,14 +2,14 @@
 
 [LiquidFun](https://google.github.io/liquidfun/) API demo for [Cocos Creator v3.5.0](https://www.cocos.com/en/creator).
 
+<div align="center">
+  <img src="doc/images/cocos-creator-liquid.gif">
+</div>
+
 There are some awesome demos like below, but they are not type-safe or outdated, so I created type-safe one on Cocos Creator v3.5.0.
 
 - https://github.com/cocos/cocos-awesome-tech-solutions/blob/3.4.0-release/demo/Creator3.4.0_2D_Fluids/assets/render.ts
 - https://github.com/baiyuwubing/cocos-creator-examples/blob/master/2.4.x/assets/demo03/LiquidBox2dTest.ts
-
-<div align="center">
-  <img src="doc/images/cocos-creator-liquid.gif">
-</div>
 
 ## What I did for type-safety.
 
