@@ -1,5 +1,6 @@
 {
   "script": {
     "importMap": "project://import-map.json"
-  }
+  },
+  "__version__": "1.0.2"
 }
