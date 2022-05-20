@@ -259,6 +259,7 @@
       "__uuid__": "7d8f9b89-4fd1-4c9f-a3ab-38ec7cded7ca@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
+    "particleRadius": 1.5,
     "_id": "echjApl8RIsICVonj0n42Q"
   },
   {
