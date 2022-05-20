@@ -12,9 +12,9 @@ import {
 const { ccclass, property } = _decorator;
 
 // followings and import-map.json are very dirty hack to refer hidden types such as b2ParticleSystem.
-import * as ccb2 from "@cocos/box2d/src/box2d";
+import * as b2 from "@cocos/box2d/src/box2d";
 // @ts-ignore
-ccb2 = ccb2.default;
+b2 = b2.default;
 
 /**
  * Predefined variables
@@ -30,8 +30,8 @@ ccb2 = ccb2.default;
 
 @ccclass("Liquid")
 export class Liquid extends Component {
-  particleSystem: ccb2.b2ParticleSystem;
-  particleGroup: ccb2.b2ParticleGroup;
+  particleSystem: b2.b2ParticleSystem;
+  particleGroup: b2.b2ParticleGroup;
 
   @property(SpriteFrame)
   particleSpriteFrame: SpriteFrame;
@@ -43,22 +43,22 @@ export class Liquid extends Component {
     this.fixGrowableStack();
 
     // cast just once for type safety
-    const world = PhysicsSystem2D.instance.physicsWorld.impl as ccb2.b2World;
+    const world = PhysicsSystem2D.instance.physicsWorld.impl as b2.b2World;
 
     // create particle system from definition
-    const particleSystemDef = new ccb2.b2ParticleSystemDef();
+    const particleSystemDef = new b2.b2ParticleSystemDef();
     particleSystemDef.radius = this.particleRadius / PHYSICS_2D_PTM_RATIO;
     this.particleSystem = world.CreateParticleSystem(particleSystemDef);
 
     // create particle group from definition
-    const groupDef = new ccb2.b2ParticleGroupDef();
-    const shape = new ccb2.b2PolygonShape();
+    const groupDef = new b2.b2ParticleGroupDef();
+    const shape = new b2.b2PolygonShape();
     shape.SetAsBox(
       this.uiTransform.width / 2 / PHYSICS_2D_PTM_RATIO,
       this.uiTransform.height / 2 / PHYSICS_2D_PTM_RATIO
     );
     groupDef.shape = shape;
-    groupDef.flags = ccb2.b2ParticleFlag.b2_waterParticle;
+    groupDef.flags = b2.b2ParticleFlag.b2_waterParticle;
     const center = this.uiTransform.convertToWorldSpaceAR(
       new math.Vec3(0, 0, 0)
     );
@@ -123,7 +123,7 @@ export class Liquid extends Component {
    * https://github.com/cocos-creator/cocos-box2d.ts/blob/8c3e947d96833f17e9041341b5ce573606fb6c3e/src/collision/b2_dynamic_tree.ts#L99
    */
   private fixGrowableStack(): void {
-    const world = PhysicsSystem2D.instance.physicsWorld.impl as ccb2.b2World;
+    const world = PhysicsSystem2D.instance.physicsWorld.impl as b2.b2World;
     const stack = world?.m_contactManager?.m_broadPhase?.m_tree?.m_stack;
     if (!stack) {
       return;
