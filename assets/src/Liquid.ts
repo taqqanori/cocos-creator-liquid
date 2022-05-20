@@ -35,6 +35,8 @@ export class Liquid extends Component {
 
   @property(SpriteFrame)
   particleSpriteFrame: SpriteFrame;
+  @property(Number)
+  particleRadius: number;
 
   start() {
     // a hack to avoid strange runtime error raised when there are no RigidBody2D in world.
@@ -45,8 +47,7 @@ export class Liquid extends Component {
 
     // create particle system from definition
     const particleSystemDef = new ccb2.b2ParticleSystemDef();
-    particleSystemDef.radius =
-      this.particleSpriteFrame.width / 2 / PHYSICS_2D_PTM_RATIO;
+    particleSystemDef.radius = this.particleRadius / PHYSICS_2D_PTM_RATIO;
     this.particleSystem = world.CreateParticleSystem(particleSystemDef);
 
     // create particle group from definition
