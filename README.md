@@ -52,7 +52,7 @@ b2 = b2.default;
 
 ### Do an unsafe cast
 
-`PhysicsSystem2D.instance.physicsWorld.impl` is `any`, but actually b2World instance who has `CreateParticleSystem()` method, so I did a unsafe cast just once.
+`PhysicsSystem2D.instance.physicsWorld.impl` is `any`, but actually `b2World` instance who has `CreateParticleSystem()` method, so I did a unsafe cast just once.
 
 ```ts
 // cast just once for type safety
